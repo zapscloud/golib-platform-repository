@@ -164,11 +164,11 @@ func (p *InvoiceMongoDBDao) List(filter string, sort string, skip int64, limit i
 }
 
 // Get - Get account details
-func (p *InvoiceMongoDBDao) Get(client_id string) (utils.Map, error) {
+func (p *InvoiceMongoDBDao) Get(invoice_id string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("accountMongoDao::Get:: Begin ", client_id)
+	log.Println("accountMongoDao::Get:: Begin ", invoice_id)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformInvoices)
 	if err != nil {
@@ -179,7 +179,7 @@ func (p *InvoiceMongoDBDao) Get(client_id string) (utils.Map, error) {
 	log.Println("Find:: Got Collection ")
 	stages := []bson.M{}
 	filter := bson.D{
-		{Key: platform_common.FLD_CLIENT_ID, Value: client_id},
+		{Key: platform_common.FLD_INVOICE_ID, Value: invoice_id},
 
 		{Key: db_common.FLD_IS_DELETED, Value: false}}
 	log.Println("Get:: Got filter ", filter)
@@ -271,13 +271,13 @@ func (p *InvoiceMongoDBDao) Create(indata utils.Map) (utils.Map, error) {
 
 	}
 	log.Println("Inserted a single document: ", insertResult.InsertedID)
-	log.Println("Save - End", indata[platform_common.FLD_CLIENT_ID])
+	log.Println("Save - End", indata[platform_common.FLD_INVOICE_ID])
 
 	return indata, err
 }
 
 // Update - Update Collection
-func (p *InvoiceMongoDBDao) Update(client_id string, indata utils.Map) (utils.Map, error) {
+func (p *InvoiceMongoDBDao) Update(invoice_id string, indata utils.Map) (utils.Map, error) {
 
 	log.Println("Update - Begin")
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformInvoices)
@@ -290,7 +290,7 @@ func (p *InvoiceMongoDBDao) Update(client_id string, indata utils.Map) (utils.Ma
 	log.Printf("Update - Values %v", indata)
 
 	filter := bson.D{
-		{Key: platform_common.FLD_CLIENT_ID, Value: client_id}}
+		{Key: platform_common.FLD_INVOICE_ID, Value: invoice_id}}
 
 	updateResult, err := collection.UpdateOne(ctx, filter, bson.D{{Key: platform_common.MONGODB_SET, Value: indata}})
 	if err != nil {
@@ -303,9 +303,9 @@ func (p *InvoiceMongoDBDao) Update(client_id string, indata utils.Map) (utils.Ma
 }
 
 // Delete - Delete Collection
-func (p *InvoiceMongoDBDao) Delete(client_id string) (int64, error) {
+func (p *InvoiceMongoDBDao) Delete(invoice_id string) (int64, error) {
 
-	log.Println("accountMongoDao::Delete - Begin ", client_id)
+	log.Println("accountMongoDao::Delete - Begin ", invoice_id)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformInvoices)
 	if err != nil {
@@ -318,7 +318,7 @@ func (p *InvoiceMongoDBDao) Delete(client_id string) (int64, error) {
 	})
 
 	filter := bson.D{
-		{Key: platform_common.FLD_CLIENT_ID, Value: client_id},
+		{Key: platform_common.FLD_INVOICE_ID, Value: invoice_id},
 	}
 
 	res, err := collection.DeleteOne(ctx, filter, opts)
