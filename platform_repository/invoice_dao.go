@@ -9,7 +9,7 @@ import (
 // InvoiceDao - Contact DAO Repository
 type InvoiceDao interface {
 	// InitializeDao
-	InitializeDao(client utils.Map, businessId string)
+	InitializeDao(client utils.Map)
 
 	// List
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
@@ -34,7 +34,7 @@ type InvoiceDao interface {
 }
 
 // NewInvoiceDao - Contruct Holiday Dao
-func NewInvoiceDao(client utils.Map, business_id string) InvoiceDao {
+func NewInvoiceDao(client utils.Map) InvoiceDao {
 	var daoClient InvoiceDao = nil
 
 	// Get DatabaseType and no need to validate error
@@ -52,7 +52,7 @@ func NewInvoiceDao(client utils.Map, business_id string) InvoiceDao {
 
 	if daoClient != nil {
 		// Initialize the Dao
-		daoClient.InitializeDao(client, business_id)
+		daoClient.InitializeDao(client)
 	}
 
 	return daoClient

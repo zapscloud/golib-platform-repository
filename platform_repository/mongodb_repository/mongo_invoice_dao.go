@@ -13,8 +13,7 @@ import (
 
 // / InvoiceMongoDBDao - Client DAO Repository
 type InvoiceMongoDBDao struct {
-	client     utils.Map
-	businessID string
+	client utils.Map
 }
 
 // DeleteAll implements platform_repository.InvoiceDao.
@@ -26,10 +25,10 @@ func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }
 
-func (p *InvoiceMongoDBDao) InitializeDao(client utils.Map, businessId string) {
+func (p *InvoiceMongoDBDao) InitializeDao(client utils.Map) {
 	log.Println("Initialize Client Mongodb DAO")
 	p.client = client
-	p.businessID = businessId
+
 }
 
 // List - List all Collections
@@ -64,7 +63,6 @@ func (p *InvoiceMongoDBDao) List(filter string, sort string, skip int64, limit i
 
 	// Match Stage
 	filterdoc = append(filterdoc,
-		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
 		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	filterdoc = append(filterdoc, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
@@ -142,7 +140,6 @@ func (p *InvoiceMongoDBDao) List(filter string, sort string, skip int64, limit i
 	}
 
 	basefilterdoc := bson.D{
-		{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
 		{Key: db_common.FLD_IS_DELETED, Value: false}}
 
 	totalcount, err := collection.CountDocuments(ctx, basefilterdoc)
@@ -234,7 +231,6 @@ func (p *InvoiceMongoDBDao) Find(filter string) (utils.Map, error) {
 		log.Println("Error on filter Unmarshal", err)
 	}
 	bfilter = append(bfilter,
-		bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: p.businessID},
 		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", bfilter)
