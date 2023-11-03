@@ -11,12 +11,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
 // IndustryMongoDBDao - Industry DAO Repository
 type IndustryMongoDBDao struct {
 	client utils.Map
 }
-
 func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }

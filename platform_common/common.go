@@ -35,6 +35,7 @@ const (
 	DbPlatformRegions      = DbPrefix + "platform_regions"
 	DbPlatformCountries    = DbPrefix + "platform_countries"
 	DbPlatformIndustries   = DbPrefix + "platform_industries"
+	DbPlatformInvoices     = DbPrefix + "platform_invoices"
 
 	DbSites       = DbPrefix + "platform_sites"
 	DbDepartments = DbPrefix + "platform_departments"
@@ -129,6 +130,9 @@ const (
 
 	// Country
 	FLD_COUNTRY_ID = "country_id"
+	// Invoice
+	FLD_INVOICE_ID   = "invoice_id"
+	FLD_INVOICE_NAME = "invoice_name"
 )
 
 const (
