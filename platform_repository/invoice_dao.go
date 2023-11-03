@@ -6,31 +6,36 @@ import (
 	"github.com/zapscloud/golib-utils/utils"
 )
 
-// InvoiceDao - User DAO Repository
+// InvoiceDao - Contact DAO Repository
 type InvoiceDao interface {
-	InitializeDao(client utils.Map)
+	// InitializeDao
+	InitializeDao(client utils.Map, businessId string)
+
+	// List
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	// Count(filter string, sort string, skip int64, limit int64) (int64, int64, error)
-	// Update - Update Collection
-	Update(userid string, indata utils.Map) (utils.Map, error)
-	// Find - Find by code
-	//Authenticate(auth_key string, auth_login string, auth_pwd string) (utils.Map, error)
-	// Insert - Insert Collection
-	Create(indata utils.Map) (utils.Map, error)
+
+	// Get - Get Contact Details
+	Get(clientId string) (utils.Map, error)
+
 	// Find - Find by code
 	Find(filter string) (utils.Map, error)
 
+	// Create - Create Contact
+	Create(indata utils.Map) (utils.Map, error)
+
+	// Update - Update Collection
+	Update(clientId string, indata utils.Map) (utils.Map, error)
+
 	// Delete - Delete Collection
-	Delete(userid string) (int64, error)
+	Delete(clientId string) (int64, error)
 
-	Get(userid string) (utils.Map, error)
-
-	BusinessList(userid string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	// DeleteAll - DeleteAll Collection
+	DeleteAll() (int64, error)
 }
 
-// NewInvoiceDao - Contruct User Dao
-func NewInvoiceDao(client utils.Map) InvoiceDao {
-	var daoInvoice InvoiceDao = nil
+// NewInvoiceDao - Contruct Holiday Dao
+func NewInvoiceDao(client utils.Map, business_id string) InvoiceDao {
+	var daoClient InvoiceDao = nil
 
 	// Get DatabaseType and no need to validate error
 	// since the dbType was assigned with correct value after dbService was created
@@ -38,19 +43,17 @@ func NewInvoiceDao(client utils.Map) InvoiceDao {
 
 	switch dbType {
 	case db_common.DATABASE_TYPE_MONGODB:
-		daoInvoice = &mongodb_repository.InvoiceMongoDBDao{}
+		daoClient = &mongodb_repository.InvoiceMongoDBDao{}
 	case db_common.DATABASE_TYPE_ZAPSDB:
 		// *Not Implemented yet*
-		daoInvoice = nil
 	case db_common.DATABASE_TYPE_MYSQLDB:
 		// *Not Implemented yet*
-		daoInvoice = nil
 	}
 
-	if daoInvoice != nil {
+	if daoClient != nil {
 		// Initialize the Dao
-		daoInvoice.InitializeDao(client)
+		daoClient.InitializeDao(client, business_id)
 	}
 
-	return daoInvoice
+	return daoClient
 }
