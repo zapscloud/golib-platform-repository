@@ -198,7 +198,7 @@ func (p *InvoiceMongoDBDao) Get(invoice_id string) (utils.Map, error) {
 
 	if !singleResult.Next(ctx) {
 		// No matching document found
-		err := &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Record Not Found", ErrorDetail: "Given TxnID is not found"}
+		err := &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Record Not Found", ErrorDetail: "Given Invoice is not found"}
 		log.Println("GetDetails:: Record not found")
 		return result, err
 	}
