@@ -9,23 +9,25 @@ import (
 // AppUserDao - User DAO Repository
 type AppUserDao interface {
 	InitializeDao(client utils.Map)
+
+	// List App Users
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
-	// Count(filter string, sort string, skip int64, limit int64) (int64, int64, error)
 	// Update - Update Collection
-	Update(userid string, indata utils.Map) (utils.Map, error)
-	// Find - Find by code
-	Authenticate(auth_key string, auth_login string, auth_pwd string) (utils.Map, error)
+	Update(userId string, indata utils.Map) (utils.Map, error)
 	// Insert - Insert Collection
 	Create(indata utils.Map) (utils.Map, error)
 	// Find - Find by code
 	Find(filter string) (utils.Map, error)
-
 	// Delete - Delete Collection
-	Delete(userid string) (int64, error)
-
-	Get(userid string) (utils.Map, error)
-
-	BusinessList(userid string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
+	Delete(userId string) (int64, error)
+	// Get By userId
+	Get(userId string) (utils.Map, error)
+	// Authenticate
+	Authenticate(auth_key string, auth_login string, auth_pwd string) (utils.Map, error)
+	// Get Registered Business of the userId
+	BusinessUser(businessId, userId string) (utils.Map, error)
+	// List of Registered Business for the given userId
+	BusinessList(userId string, filter string, sort string, skip int64, limit int64) (utils.Map, error)
 }
 
 // NewAppUserDao - Contruct User Dao

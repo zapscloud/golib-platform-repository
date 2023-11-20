@@ -119,16 +119,16 @@ func (t *AppUserMongoDBDao) List(filter string, sort string, skip int64, limit i
 	return response, nil
 }
 
-func (t *AppUserMongoDBDao) Get(userid string) (utils.Map, error) {
+func (t *AppUserMongoDBDao) Get(userId string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("AppUserMongoDBDao::Find:: Begin ", userid)
+	log.Println("AppUserMongoDBDao::Find:: Begin ", userId)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
 	log.Println("Find:: Got Collection ")
 
-	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userid}, {}}
+	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userId}, {}}
 	filter = append(filter, bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Find:: Got filter ", filter)
@@ -154,7 +154,7 @@ func (t *AppUserMongoDBDao) Get(userid string) (utils.Map, error) {
 }
 
 // Update - Update Collection
-func (t *AppUserMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, error) {
+func (t *AppUserMongoDBDao) Update(userId string, indata utils.Map) (utils.Map, error) {
 
 	log.Println("Update - Begin")
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
@@ -167,7 +167,7 @@ func (t *AppUserMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, 
 	// Update a single document
 	log.Printf("Update - Values %v", indata)
 
-	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userid}}
+	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userId}}
 
 	updateResult, err := collection.UpdateOne(ctx, filter, bson.D{{Key: "$set", Value: indata}})
 	if err != nil {
@@ -177,44 +177,6 @@ func (t *AppUserMongoDBDao) Update(userid string, indata utils.Map) (utils.Map, 
 
 	log.Println("Update - End")
 	return indata, nil
-}
-
-// Find - Find by code
-func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, auth_pwd string) (utils.Map, error) {
-	// Find a single document
-	var result utils.Map
-
-	log.Println("AppUserMongoDBDao::Authenticate:: Begin ", auth_key, auth_login)
-
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
-	log.Println("Find:: Got Collection ")
-
-	// filter := bson.D{{Key: platform_common.FLD_APP_USER_EMAIL, Value: email}, {Key: platform_common.FLD_APP_USER_PASSWORD, Value: password}}
-
-	filter := bson.M{auth_key: auth_login, platform_common.FLD_APP_USER_PASSWORD: auth_pwd, db_common.FLD_IS_DELETED: false}
-
-	log.Println("Find:: Got filter ", filter)
-
-	singleResult := collection.FindOne(ctx, filter)
-
-	if singleResult.Err() != nil {
-		log.Println("Find:: Record not found ", singleResult.Err())
-		return result, singleResult.Err()
-	}
-	singleResult.Decode(&result)
-	if err != nil {
-		log.Println("Error in decode", err)
-		return result, err
-	}
-
-	// Delete Password
-	delete(result, platform_common.FLD_APP_USER_PASSWORD)
-
-	// Remove fields from result
-	result = db_common.AmendFldsForGet(result)
-
-	log.Printf("AppUserMongoDBDao::Authenticate:: End Found a single document: %+v\n", result)
-	return result, nil
 }
 
 // Insert - Insert Collection
@@ -281,9 +243,9 @@ func (t *AppUserMongoDBDao) Find(filter string) (utils.Map, error) {
 }
 
 // Delete - Delete Collection
-func (t *AppUserMongoDBDao) Delete(userid string) (int64, error) {
+func (t *AppUserMongoDBDao) Delete(userId string) (int64, error) {
 
-	log.Println("AppUserMongoDBDao::Delete - Begin ", userid)
+	log.Println("AppUserMongoDBDao::Delete - Begin ", userId)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
 	if err != nil {
@@ -295,7 +257,7 @@ func (t *AppUserMongoDBDao) Delete(userid string) (int64, error) {
 		CaseLevel: false,
 	})
 
-	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userid}}
+	filter := bson.D{{Key: platform_common.FLD_APP_USER_ID, Value: userId}}
 
 	//filter = append(filter, bson.E{Key: platform_common.FLD_BUSINESS_ID, Value: businessID})
 
@@ -308,18 +270,93 @@ func (t *AppUserMongoDBDao) Delete(userid string) (int64, error) {
 	return res.DeletedCount, nil
 }
 
-// List - List all Collections
-func (t *AppUserMongoDBDao) BusinessList(userid string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
-	var results []utils.Map
+// Find - Find by code
+func (t *AppUserMongoDBDao) Authenticate(auth_key string, auth_login string, auth_pwd string) (utils.Map, error) {
+	// Find a single document
+	var result utils.Map
 
-	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformBusinessUser)
+	log.Println("AppUserMongoDBDao::Authenticate:: Begin ", auth_key, auth_login)
+
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformAppUsers)
+	log.Println("Find:: Got Collection ")
+
+	// filter := bson.D{{Key: platform_common.FLD_APP_USER_EMAIL, Value: email}, {Key: platform_common.FLD_APP_USER_PASSWORD, Value: password}}
+
+	filter := bson.M{auth_key: auth_login, platform_common.FLD_APP_USER_PASSWORD: auth_pwd, db_common.FLD_IS_DELETED: false}
+
+	log.Println("Find:: Got filter ", filter)
+
+	singleResult := collection.FindOne(ctx, filter)
+
+	if singleResult.Err() != nil {
+		log.Println("Find:: Record not found ", singleResult.Err())
+		return result, singleResult.Err()
+	}
+	singleResult.Decode(&result)
+	if err != nil {
+		log.Println("Error in decode", err)
+		return result, err
+	}
+
+	// Delete Password
+	delete(result, platform_common.FLD_APP_USER_PASSWORD)
+
+	// Remove fields from result
+	result = db_common.AmendFldsForGet(result)
+
+	log.Printf("AppUserMongoDBDao::Authenticate:: End Found a single document: %+v\n", result)
+	return result, nil
+}
+
+func (t *AppUserMongoDBDao) BusinessUser(businessId, userId string) (utils.Map, error) {
+
+	var result utils.Map
+
+	log.Println("AppUserMongoDBDao::BusinessUser:: Begin ", businessId, userId)
 
 	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformBusinessUser)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Println("Get Collection - Find All Collection Dao", filter, len(filter), sort, len(sort))
+	filter := bson.M{
+		platform_common.FLD_BUSINESS_ID: businessId,
+		platform_common.FLD_APP_USER_ID: userId,
+		db_common.FLD_IS_DELETED:        false}
+
+	log.Println("BusinessUser:: Got filter ", filter)
+
+	singleResult := collection.FindOne(ctx, filter)
+
+	if singleResult.Err() != nil {
+		log.Println("Find:: Record not found ", singleResult.Err())
+		return result, singleResult.Err()
+	}
+	singleResult.Decode(&result)
+	if err != nil {
+		log.Println("Error in decode", err)
+		return result, err
+	}
+
+	// Remove fields from result
+	result = db_common.AmendFldsForGet(result)
+
+	log.Printf("AppUserMongoDBDao::BusinessUser:: End Found a single document: %+v\n", result)
+	return result, nil
+}
+
+// List - List all Collections
+func (t *AppUserMongoDBDao) BusinessList(userId string, filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+	var results []utils.Map
+
+	log.Println("Begin - BusinessList", platform_common.DbPlatformBusinessUser)
+
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(t.client, platform_common.DbPlatformBusinessUser)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Println("Get Collection - BusinessList", filter, len(filter), sort, len(sort))
 
 	opts := options.Find()
 	filterdoc := bson.D{}
@@ -353,7 +390,7 @@ func (t *AppUserMongoDBDao) BusinessList(userid string, filter string, sort stri
 	}
 
 	filterdoc = append(filterdoc,
-		bson.E{Key: platform_common.FLD_APP_USER_ID, Value: userid},
+		bson.E{Key: platform_common.FLD_APP_USER_ID, Value: userId},
 		bson.E{Key: db_common.FLD_IS_DELETED, Value: false})
 
 	log.Println("Parameter values ", filterdoc, opts)
