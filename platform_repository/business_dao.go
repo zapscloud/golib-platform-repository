@@ -33,6 +33,9 @@ type BusinessDao interface {
 	// AddUser Business User
 	AddUser(indata utils.Map) (utils.Map, error)
 
+	// Update Business User
+	UpdateUser(accessid string, indata utils.Map) (utils.Map, error)
+
 	// RevokePermission with Business User
 	RemoveUser(accessid string) (string, error)
 

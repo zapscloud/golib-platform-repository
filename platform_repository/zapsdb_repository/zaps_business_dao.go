@@ -174,6 +174,25 @@ func (t BusinessZapsDBDao) AddUser(indata utils.Map) (utils.Map, error) {
 	return indata, err
 }
 
+// Update Business User
+func (t *BusinessZapsDBDao) UpdateUser(accessid string, indata utils.Map) (utils.Map, error) {
+	log.Println("Business User Save - Begin", indata)
+	connection, txnid := zapsdb_utils.GetConnection(t.client)
+
+	// Add Fields for Create
+	indata = db_common.AmendFldsforUpdate(indata)
+
+	updateResult, err := connection.UpdateOne(platform_common.DbPlatformBusinessUser, accessid, indata, txnid)
+	if err != nil {
+		return utils.Map{}, err
+	}
+	log.Println("Update a single document: ", updateResult)
+
+	log.Println("Update - End")
+	return indata, nil
+
+}
+
 // RemoveUser - Remove permission for the user to access the business
 func (t BusinessZapsDBDao) RemoveUser(accessid string) (string, error) {
 

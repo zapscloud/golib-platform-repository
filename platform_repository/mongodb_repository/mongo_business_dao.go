@@ -292,6 +292,28 @@ func (p *BusinessMongoDBDao) AddUser(indata utils.Map) (utils.Map, error) {
 	return indata, err
 }
 
+// Update Business User
+func (p *BusinessMongoDBDao) UpdateUser(accessid string, indata utils.Map) (utils.Map, error) {
+	log.Println("UpdateUser - Begin", indata)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformBusinessUser)
+	if err != nil {
+		return indata, err
+	}
+
+	// Add Fields for Create
+	indata = db_common.AmendFldsforUpdate(indata)
+
+	filter := bson.D{{Key: platform_common.FLD_BUSINESS_USER_ID, Value: accessid}}
+	updateResult, err := collection.UpdateOne(ctx, filter, bson.D{{Key: "$set", Value: indata}})
+	if err != nil {
+		return utils.Map{}, err
+	}
+	log.Println("UpdateUser a single document: ", updateResult.ModifiedCount)
+
+	log.Println("UpdateUser - End")
+	return indata, nil
+}
+
 // Delete - Delete Collection
 func (p *BusinessMongoDBDao) RemoveUser(accessid string) (string, error) {
 
