@@ -139,6 +139,7 @@ const (
 	FLD_PAYMENT_ID     = "payment_id"
 	FLD_PAYMENT_NAME   = "payment_name"
 	FLD_PAYMENT_TXN_ID = "payment_txn_id"
+	FLD_DATE_TIME      = "date_time"
 )
 
 const (
