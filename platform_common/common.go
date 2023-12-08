@@ -37,6 +37,7 @@ const (
 	DbPlatformIndustries   = DbPrefix + "platform_industries"
 	DbPlatformInvoices     = DbPrefix + "platform_invoices"
 	DbPlatformPayments     = DbPrefix + "platform_payments"
+	DbPlatformPayment_txns = DbPrefix + "platform_payment_txns"
 
 	DbSites       = DbPrefix + "platform_sites"
 	DbDepartments = DbPrefix + "platform_departments"
@@ -135,8 +136,9 @@ const (
 	FLD_INVOICE_ID   = "invoice_id"
 	FLD_INVOICE_NAME = "invoice_name"
 	// payment
-	FLD_PAYMENT_ID   = "payment_id"
-	FLD_PAYMENT_NAME = "payment_name"
+	FLD_PAYMENT_ID     = "payment_id"
+	FLD_PAYMENT_NAME   = "payment_name"
+	FLD_PAYMENT_TXN_ID = "payment_txn_id"
 )
 
 const (
