@@ -37,7 +37,7 @@ const (
 	DbPlatformIndustries   = DbPrefix + "platform_industries"
 	DbPlatformInvoices     = DbPrefix + "platform_invoices"
 	DbPlatformPayments     = DbPrefix + "platform_payments"
-	DbPlatformPayment_txns = DbPrefix + "platform_payment_txns"
+	DbPlatformPaymentTxns = DbPrefix + "platform_payment_txns"
 
 	DbSites       = DbPrefix + "platform_sites"
 	DbDepartments = DbPrefix + "platform_departments"

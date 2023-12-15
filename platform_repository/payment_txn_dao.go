@@ -6,8 +6,8 @@ import (
 	"github.com/zapscloud/golib-utils/utils"
 )
 
-// Payment_txnDao - Contact DAO Repository
-type Payment_txnDao interface {
+// PaymentTxnDao - Contact DAO Repository
+type PaymentTxnDao interface {
 	// InitializeDao
 	InitializeDao(client utils.Map)
 
@@ -15,7 +15,7 @@ type Payment_txnDao interface {
 	List(filter string, sort string, skip int64, limit int64) (utils.Map, error)
 
 	// Get - Get Contact Details
-	Get(payment_txn_id string) (utils.Map, error)
+	Get(PaymentTxnid string) (utils.Map, error)
 
 	// Find - Find by code
 	Find(filter string) (utils.Map, error)
@@ -24,18 +24,18 @@ type Payment_txnDao interface {
 	Create(indata utils.Map) (utils.Map, error)
 
 	// Update - Update Collection
-	Update(payment_txn_id string, indata utils.Map) (utils.Map, error)
+	Update(PaymentTxnid string, indata utils.Map) (utils.Map, error)
 
 	// Delete - Delete Collection
-	Delete(payment_txn_id string) (int64, error)
+	Delete(PaymentTxnid string) (int64, error)
 
 	// DeleteAll - DeleteAll Collection
 	DeleteAll() (int64, error)
 }
 
-// NewPayment_txnDao - Contruct Holiday Dao
-func NewPayment_txnDao(client utils.Map) Payment_txnDao {
-	var daoClient Payment_txnDao = nil
+// NewPaymentTxnDao - Contruct Holiday Dao
+func NewPaymentTxnDao(client utils.Map) PaymentTxnDao {
+	var daoClient PaymentTxnDao = nil
 
 	// Get DatabaseType and no need to validate error
 	// since the dbType was assigned with correct value after dbService was created
@@ -43,7 +43,7 @@ func NewPayment_txnDao(client utils.Map) Payment_txnDao {
 
 	switch dbType {
 	case db_common.DATABASE_TYPE_MONGODB:
-		daoClient = &mongodb_repository.Payment_txnMongoDBDao{}
+		daoClient = &mongodb_repository.PaymentTxnMongoDBDao{}
 	case db_common.DATABASE_TYPE_ZAPSDB:
 		// *Not Implemented yet*
 	case db_common.DATABASE_TYPE_MYSQLDB:

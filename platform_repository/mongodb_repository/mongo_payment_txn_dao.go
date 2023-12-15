@@ -11,13 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// / Payment_txnMongoDBDao - Client DAO Repository
-type Payment_txnMongoDBDao struct {
+// / PaymentTxnMongoDBDao - Client DAO Repository
+type PaymentTxnMongoDBDao struct {
 	client utils.Map
 }
 
-// DeleteAll implements platform_repository.Payment_txnDao.
-func (*Payment_txnMongoDBDao) DeleteAll() (int64, error) {
+// DeleteAll implements platform_repository.PaymentTxnDao.
+func (*PaymentTxnMongoDBDao) DeleteAll() (int64, error) {
 	panic("unimplemented")
 }
 
@@ -25,19 +25,19 @@ func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }
 
-func (p *Payment_txnMongoDBDao) InitializeDao(client utils.Map) {
+func (p *PaymentTxnMongoDBDao) InitializeDao(client utils.Map) {
 	log.Println("Initialize Client Mongodb DAO")
 	p.client = client
 
 }
 
 // List - List all Collections
-func (p *Payment_txnMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
+func (p *PaymentTxnMongoDBDao) List(filter string, sort string, skip int64, limit int64) (utils.Map, error) {
 	var results []utils.Map
 	var bFilter bool = false
-	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformPayment_txns)
+	log.Println("Begin - Find All Collection Dao", platform_common.DbPlatformPaymentTxns)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	if err != nil {
 		return nil, err
 	}
@@ -164,13 +164,13 @@ func (p *Payment_txnMongoDBDao) List(filter string, sort string, skip int64, lim
 }
 
 // Get - Get account details
-func (p *Payment_txnMongoDBDao) Get(Payment_txn_id string) (utils.Map, error) {
+func (p *PaymentTxnMongoDBDao) Get(PaymentTxn_id string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
-	log.Println("accountMongoDao::Get:: Begin ", Payment_txn_id)
+	log.Println("accountMongoDao::Get:: Begin ", PaymentTxn_id)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +179,7 @@ func (p *Payment_txnMongoDBDao) Get(Payment_txn_id string) (utils.Map, error) {
 	log.Println("Find:: Got Collection ")
 	stages := []bson.M{}
 	filter := bson.D{
-		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: Payment_txn_id},
+		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: PaymentTxn_id},
 
 		{Key: db_common.FLD_IS_DELETED, Value: false}}
 	log.Println("Get:: Got filter ", filter)
@@ -198,7 +198,7 @@ func (p *Payment_txnMongoDBDao) Get(Payment_txn_id string) (utils.Map, error) {
 
 	if !singleResult.Next(ctx) {
 		// No matching document found
-		err := &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Record Not Found", ErrorDetail: "Given Payment_txn is not found"}
+		err := &utils.AppError{ErrorCode: "S30102", ErrorMsg: "Record Not Found", ErrorDetail: "Given PaymentTxn is not found"}
 		log.Println("GetDetails:: Record not found")
 		return result, err
 	}
@@ -216,13 +216,13 @@ func (p *Payment_txnMongoDBDao) Get(Payment_txn_id string) (utils.Map, error) {
 }
 
 // Find - Find by code
-func (p *Payment_txnMongoDBDao) Find(filter string) (utils.Map, error) {
+func (p *PaymentTxnMongoDBDao) Find(filter string) (utils.Map, error) {
 	// Find a single document
 	var result utils.Map
 
 	log.Println("accountMongoDao::Find:: Begin ", filter)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	log.Println("Find:: Got Collection ", err)
 
 	bfilter := bson.D{}
@@ -253,10 +253,10 @@ func (p *Payment_txnMongoDBDao) Find(filter string) (utils.Map, error) {
 }
 
 // Create - Create Collection
-func (p *Payment_txnMongoDBDao) Create(indata utils.Map) (utils.Map, error) {
+func (p *PaymentTxnMongoDBDao) Create(indata utils.Map) (utils.Map, error) {
 
 	log.Println("Business Client Save - Begin", indata)
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	if err != nil {
 		return indata, err
 	}
@@ -277,10 +277,10 @@ func (p *Payment_txnMongoDBDao) Create(indata utils.Map) (utils.Map, error) {
 }
 
 // Update - Update Collection
-func (p *Payment_txnMongoDBDao) Update(Payment_txn_id string, indata utils.Map) (utils.Map, error) {
+func (p *PaymentTxnMongoDBDao) Update(PaymentTxn_id string, indata utils.Map) (utils.Map, error) {
 
 	log.Println("Update - Begin")
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	if err != nil {
 		return utils.Map{}, err
 	}
@@ -290,7 +290,7 @@ func (p *Payment_txnMongoDBDao) Update(Payment_txn_id string, indata utils.Map) 
 	log.Printf("Update - Values %v", indata)
 
 	filter := bson.D{
-		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: Payment_txn_id}}
+		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: PaymentTxn_id}}
 
 	updateResult, err := collection.UpdateOne(ctx, filter, bson.D{{Key: platform_common.MONGODB_SET, Value: indata}})
 	if err != nil {
@@ -303,11 +303,11 @@ func (p *Payment_txnMongoDBDao) Update(Payment_txn_id string, indata utils.Map) 
 }
 
 // Delete - Delete Collection
-func (p *Payment_txnMongoDBDao) Delete(Payment_txn_id string) (int64, error) {
+func (p *PaymentTxnMongoDBDao) Delete(PaymentTxn_id string) (int64, error) {
 
-	log.Println("accountMongoDao::Delete - Begin ", Payment_txn_id)
+	log.Println("accountMongoDao::Delete - Begin ", PaymentTxn_id)
 
-	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPayment_txns)
+	collection, ctx, err := mongo_utils.GetMongoDbCollection(p.client, platform_common.DbPlatformPaymentTxns)
 	if err != nil {
 		return 0, err
 	}
@@ -318,7 +318,7 @@ func (p *Payment_txnMongoDBDao) Delete(Payment_txn_id string) (int64, error) {
 	})
 
 	filter := bson.D{
-		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: Payment_txn_id},
+		{Key: platform_common.FLD_PAYMENT_TXN_ID, Value: PaymentTxn_id},
 	}
 
 	res, err := collection.DeleteOne(ctx, filter, opts)
