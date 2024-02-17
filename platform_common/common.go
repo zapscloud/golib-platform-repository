@@ -37,7 +37,7 @@ const (
 	DbPlatformIndustries   = DbPrefix + "platform_industries"
 	DbPlatformInvoices     = DbPrefix + "platform_invoices"
 	DbPlatformPayments     = DbPrefix + "platform_payments"
-	DbPlatformPaymentTxns = DbPrefix + "platform_payment_txns"
+	DbPlatformPaymentTxns  = DbPrefix + "platform_payment_txns"
 
 	DbSites       = DbPrefix + "platform_sites"
 	DbDepartments = DbPrefix + "platform_departments"
@@ -78,15 +78,17 @@ const (
 	FLD_SYS_USER_PHONE     = "phone"
 
 	// App User
-	FLD_APP_USER_ID             = "user_id"
-	FLD_APP_USER_PASSWORD       = "password"
-	FLD_APP_USER_EMAILID        = "email_id"
-	FLD_APP_USER_PHONE          = "phone"
-	FLD_APP_USER_UNIQUE_ID      = "unique_id"
-	FLD_APP_USER_FNAME          = "first_name"
-	FLD_APP_USER_LNAME          = "last_name"
-	FLD_APP_USER_PASSWORD_OTP   = "password_otp"
-	FLD_APP_USER_PASSWORD_TOKEN = "password_token"
+	FLD_APP_USER_ID               = "user_id"
+	FLD_APP_USER_PASSWORD         = "password"
+	FLD_APP_USER_EMAILID          = "email_id"
+	FLD_APP_USER_PHONE            = "phone"
+	FLD_APP_USER_UNIQUE_ID        = "unique_id"
+	FLD_APP_USER_FNAME            = "first_name"
+	FLD_APP_USER_LNAME            = "last_name"
+	FLD_APP_USER_PASSWORD_OTP     = "password_otp"
+	FLD_APP_USER_PASSWORD_TOKEN   = "password_token"
+	FLD_APP_USER_EMAIL_VERIFY_OTP = "email_verify_otp"
+	FLD_APP_USER_PHONE_VERIFY_OTP = "phone_verify_otp"
 
 	// App Region table fields
 	FLD_REGION_ID             = "region_id"
