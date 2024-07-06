@@ -332,7 +332,7 @@ func (t *AppUserMongoDBDao) BusinessUser(businessId, userId string) (utils.Map, 
 		log.Println("Find:: Record not found ", singleResult.Err())
 		return result, singleResult.Err()
 	}
-	singleResult.Decode(&result)
+	err = singleResult.Decode(&result)
 	if err != nil {
 		log.Println("Error in decode", err)
 		return result, err

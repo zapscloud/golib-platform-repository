@@ -360,12 +360,6 @@ func (t *SysRoleMongoDBDao) GetCredentials(role_id string) (utils.Map, error) {
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("FindCredential:: Got filter ", filterdoc)
-
-	if err != nil {
-		return nil, err
-	}
-
-	log.Println("Parameter values ", filterdoc)
 	cursor, err := collection.Find(ctx, filterdoc)
 	if err != nil {
 		return nil, err
@@ -383,11 +377,6 @@ func (t *SysRoleMongoDBDao) GetCredentials(role_id string) (utils.Map, error) {
 	}
 
 	log.Println("End - Find All Collection Dao", listdata)
-
-	if err != nil {
-		log.Println("Error in decode", err)
-		return nil, err
-	}
 
 	response := utils.Map{
 		"credentials": listdata,
@@ -490,12 +479,6 @@ func (t *SysRoleMongoDBDao) GetUsers(role_id string) (utils.Map, error) {
 		{Key: db_common.FLD_IS_DELETED, Value: false}, {}}
 
 	log.Println("GetUsers:: Got filter ", filterdoc)
-
-	if err != nil {
-		return nil, err
-	}
-
-	log.Println("Parameter values ", filterdoc)
 	cursor, err := collection.Find(ctx, filterdoc)
 	if err != nil {
 		return nil, err
@@ -513,12 +496,6 @@ func (t *SysRoleMongoDBDao) GetUsers(role_id string) (utils.Map, error) {
 	}
 
 	log.Println("End - Find All Collection Dao", listdata)
-
-	if err != nil {
-		log.Println("Error in decode", err)
-		return nil, err
-	}
-
 	response := utils.Map{
 		"sys_users": results,
 	}

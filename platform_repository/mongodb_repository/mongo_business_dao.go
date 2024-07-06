@@ -452,7 +452,7 @@ func (p *BusinessMongoDBDao) UserList(businessid string, filter string, sort str
 			log.Println("GetAccessDetails:: Record not found ", singleResult.Err())
 			return nil, singleResult.Err()
 		}
-		singleResult.Decode(&result)
+		err = singleResult.Decode(&result)
 		if err != nil {
 			log.Println("Error in decode", err)
 			//return result, err
@@ -571,7 +571,7 @@ func (p *BusinessMongoDBDao) BusinessList(userId string, filter string, sort str
 			log.Println("GetAccessDetails:: Record not found ", singleResult.Err())
 			return nil, singleResult.Err()
 		}
-		singleResult.Decode(&result)
+		err = singleResult.Decode(&result)
 		if err != nil {
 			log.Println("Error in decode", err)
 			//return result, err

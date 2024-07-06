@@ -11,10 +11,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 // IndustryMongoDBDao - Industry DAO Repository
 type IndustryMongoDBDao struct {
 	client utils.Map
 }
+
 func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 }
@@ -145,7 +147,7 @@ func (t *IndustryMongoDBDao) GetIndustryById(industryid string) (utils.Map, erro
 		log.Println("Find:: Record not found ", singleResult.Err())
 		return result, singleResult.Err()
 	}
-	singleResult.Decode(&result)
+	err = singleResult.Decode(&result)
 	if err != nil {
 		log.Println("Error in decode", err)
 		return result, err
